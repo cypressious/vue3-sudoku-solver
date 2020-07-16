@@ -1,13 +1,13 @@
-import { CellModel, GridModel } from '@/model/SudokuModel'
+import { CellCollection, GridModel } from '@/model/SudokuModel'
 
 export const GRID_SIZE = 9
 
 export function newGrid(): GridModel {
     let rows = Array.from({ length: GRID_SIZE }, (_, y) =>
         Array.from({ length: GRID_SIZE }, (_, x) =>
-            ({ candidates: new Set<number>(), id: `R${y + 1}C${x + 1}` })))
+            ({ candidates: new Set<number>(), id: `R${y + 1}C${x + 1}`, x, y })))
 
-    const boxes: CellModel[][] = []
+    const boxes: CellCollection[] = []
 
     for (let y = 0; y < GRID_SIZE / 3; y++) {
         for (let x = 0; x < GRID_SIZE / 3; x++) {
@@ -33,7 +33,7 @@ export function checkGrid(grid: GridModel): boolean {
         && grid.boxes.every(checkCollection)
 }
 
-function checkCollection(collection: CellModel[]): boolean {
+function checkCollection(collection: CellCollection): boolean {
     let numbers = new Set<number>()
     for (let cell of collection) {
         if (!cell.value) continue
@@ -62,7 +62,7 @@ export function computeCandidates(grid: GridModel) {
     eliminateCandidatesInCollection(grid.boxes)
 }
 
-function eliminateCandidatesInCollection(collections: CellModel[][]) {
+function eliminateCandidatesInCollection(collections: CellCollection[]) {
     for (let collection of collections) {
         const toRemove = new Set<number>()
 

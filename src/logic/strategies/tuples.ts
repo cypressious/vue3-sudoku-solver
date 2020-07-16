@@ -1,4 +1,4 @@
-import { CellModel, GridModel, Hint } from '../../model/SudokuModel'
+import { CellCollection, CellModel, GridModel, Hint } from '../../model/SudokuModel'
 import { subsets } from '../setHelpers'
 import { addLink, Graph, GraphNode, newGraph } from '../graph'
 
@@ -8,7 +8,7 @@ export function findTupleElimination(grid: GridModel): Hint | undefined {
         ?? grid.boxes.map(findTuplesInCollection).find(x => x)
 }
 
-function findTuplesInCollection(collection: CellModel[]): Hint | undefined {
+function findTuplesInCollection(collection: CellCollection): Hint | undefined {
     const graph = buildGraph(collection)
 
     while (graph.size) {
@@ -57,7 +57,7 @@ function findTuplesInCollection(collection: CellModel[]): Hint | undefined {
     }
 }
 
-function buildGraph(collection: CellModel[]): Graph<CellModel> {
+function buildGraph(collection: CellCollection): Graph<CellModel> {
     const graph = newGraph<CellModel>()
 
     for (let cell of collection) {
