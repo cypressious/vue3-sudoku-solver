@@ -46,6 +46,11 @@ function toHint(cellsWithEliminations: CellModel[], cellsWithCandidate: CellMode
 
     return {
         cells: new Set<string>(cellsWithCandidate.map(x => x.id)),
-        description: `Pointing tuple ${tuple} eliminates candidate ${candidate} from ${eliminated}.`
+        description: `Pointing tuple ${tuple} eliminates candidate ${candidate} from ${eliminated}.`,
+        apply() {
+            for (let cell of cellsWithEliminations) {
+                cell.candidates.delete(candidate)
+            }
+        }
     }
 }

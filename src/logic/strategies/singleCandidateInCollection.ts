@@ -18,7 +18,10 @@ function findSingleCandidateInCollection(collection: CellCollection, collectionN
             const cell = cells[0]
             return {
                 cells: new Set<string>([cell.id]),
-                description: `Cell ${cell.id} is the only candidate in its ${collectionName} with candidate ${i}`
+                description: `Cell ${cell.id} is the only cell in its ${collectionName} with candidate ${i}`,
+                apply() {
+                    cell.value = i
+                }
             }
         }
     }

@@ -29,7 +29,8 @@ tr > td:nth-child(3n) {
 
             <button class="button" @click="fillCandidates(grid)">Fill Candidates</button>
             <button class="button" @click="eliminateCandidates(grid)">Eliminate Candidates</button>
-            <button class="button" @click="findHint">Next Hint</button>
+            <button class="button" @click="findNextHint">Next Hint</button>
+            <button v-if="currentHint" class="button" @click="applyHint">Apply Hint</button>
         </div>
 
         <table class="table is-bordered">
@@ -74,7 +75,7 @@ export default defineComponent({
             isValid: computed(() => checkGrid(grid)),
             fillCandidates,
             eliminateCandidates,
-            ...useHint(grid)
+            ...useHint(grid),
         }
     }
 })

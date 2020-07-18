@@ -17,4 +17,5 @@ export interface GridModel {
 export interface Hint {
     description: string
     cells: Set<string>
+    apply(): void
 }
