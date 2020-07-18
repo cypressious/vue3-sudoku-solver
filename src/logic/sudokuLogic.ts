@@ -45,7 +45,7 @@ function checkCollection(collection: CellCollection): boolean {
     return true
 }
 
-export function computeCandidates(grid: GridModel) {
+export function fillCandidates(grid: GridModel) {
     for (let column of grid.columns) {
         for (let cell of column) {
             cell.candidates.clear()
@@ -56,7 +56,9 @@ export function computeCandidates(grid: GridModel) {
             }
         }
     }
+}
 
+export function eliminateCandidates(grid: GridModel) {
     eliminateCandidatesInCollection(grid.columns)
     eliminateCandidatesInCollection(grid.rows)
     eliminateCandidatesInCollection(grid.boxes)

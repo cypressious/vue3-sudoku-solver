@@ -27,7 +27,8 @@ tr > td:nth-child(3n) {
                 {{ isValid ? 'Valid' : 'Invalid' }}
             </span>
 
-            <button class="button" @click="computeCandidates(grid)">Eliminate Candidates</button>
+            <button class="button" @click="fillCandidates(grid)">Fill Candidates</button>
+            <button class="button" @click="eliminateCandidates(grid)">Eliminate Candidates</button>
             <button class="button" @click="findHint">Next Hint</button>
         </div>
 
@@ -50,7 +51,7 @@ tr > td:nth-child(3n) {
 <script lang="ts">
 import { computed, defineComponent, reactive, ref } from 'vue'
 import Cell from './Cell.vue'
-import { checkGrid, computeCandidates, newGrid } from '../logic/sudokuLogic'
+import { checkGrid, eliminateCandidates, fillCandidates, newGrid } from '../logic/sudokuLogic'
 import { useKeyboard } from '../hooks/useKeyboard'
 import { useHint } from '../hooks/useHint'
 import { useQuery } from '../hooks/useQuery'
@@ -71,7 +72,8 @@ export default defineComponent({
             grid,
             selectedPosition,
             isValid: computed(() => checkGrid(grid)),
-            computeCandidates,
+            fillCandidates,
+            eliminateCandidates,
             ...useHint(grid)
         }
     }
