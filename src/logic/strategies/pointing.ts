@@ -25,7 +25,8 @@ function findPointingWithDirection(
 ): Hint | undefined {
     const coordinate = type === 'row' ? 'y' : 'x'
 
-    if (new Set(cellsWithCandidate.map(cell => cell[coordinate])).size != 1) {
+    const set = new Set(cellsWithCandidate.map(cell => cell[coordinate]))
+    if (set.size != 1) {
         return
     }
 

@@ -1,7 +1,6 @@
 import { GridModel, Hint } from '../model/SudokuModel'
 import { ref, Ref } from 'vue'
-import { findTupleElimination } from '../logic/strategies/tuples'
-import findPointing from '../logic/strategies/pointing'
+import { findHint } from '../logic/strategies'
 
 export function useHint(grid: GridModel): { currentHint: Ref<Hint | null>, findHint(): void } {
     let currentHint = ref<Hint | null>(null)
@@ -9,7 +8,7 @@ export function useHint(grid: GridModel): { currentHint: Ref<Hint | null>, findH
     return {
         currentHint,
         findHint() {
-            currentHint.value = findPointing(grid) ?? findTupleElimination(grid) ?? null
+            currentHint.value = findHint(grid)
         }
     }
 }
