@@ -3,7 +3,7 @@
   "version": "0.0.0",
   "scripts": {
     "dev": "vite",
-    "build": "vite build",
+    "build": "vite build --base=/vue3-sudoku-solver/",
     "upgrades": "yarn upgrade-interactive --latest",
     "predeploy": "yarn build",
     "deploy": "gh-pages -d dist -b gh-pages"
