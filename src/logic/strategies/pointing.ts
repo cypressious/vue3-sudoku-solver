@@ -1,55 +1,74 @@
-import { CellModel, GridModel, Hint, CellCollection } from '../../model/SudokuModel'
-import { GRID_SIZE } from '../sudokuLogic'
+import { CellCollection, CellModel, GridModel, Hint } from '../../model/SudokuModel'
+import { allValues, getCellsWithCandidate } from '../sudokuLogic'
 
 export default function findPointing(grid: GridModel): Hint | undefined {
     return grid.boxes.map(box => findPointingInBox(grid, box)).find(x => x)
 }
 
 function findPointingInBox(grid: GridModel, box: CellCollection): Hint | undefined {
-    return Array.from({ length: GRID_SIZE }, (_, x) => findPointingInBoxForValue(grid, box, x + 1))
+    return allValues()
+        .map(candidate => findPointingInBoxForCandidate(grid, box, candidate) ?? findReversePointingInBoxForCandidate(grid, box, candidate))
         .find(x => x)
 }
 
-function findPointingInBoxForValue(grid: GridModel, box: CellCollection, candidate: number): Hint | undefined {
-    const cellsWithCandidate = box.filter(x => x.value == null && x.candidates.has(candidate))
+function findPointingInBoxForCandidate(grid: GridModel, box: CellCollection, candidate: number): Hint | undefined {
+    const cellsWithCandidate = getCellsWithCandidate(box, candidate)
 
-    return findPointingWithDirection(cellsWithCandidate, grid, candidate, 'row')
-        ?? findPointingWithDirection(cellsWithCandidate, grid, candidate, 'column')
+    return findPointingWithDirection(cellsWithCandidate, grid, candidate, 'rows', 'y', 'box')
+        ?? findPointingWithDirection(cellsWithCandidate, grid, candidate, 'columns', 'x', 'box')
 }
+
+function findReversePointingInBoxForCandidate(grid: GridModel, box: CellCollection, candidate: number): Hint | undefined {
+    const firstCell = box[0]
+
+    for (let x = firstCell.x; x < firstCell.x + 3; x++) {
+        const cellsWithCandidate = getCellsWithCandidate(grid.columns[x], candidate)
+        const hint = findPointingWithDirection(cellsWithCandidate, grid, candidate, 'boxes', 'box', 'x')
+        if (hint) {
+            return hint
+        }
+    }
+
+    for (let y = firstCell.y; y < firstCell.y + 3; y++) {
+        const cellsWithCandidate = getCellsWithCandidate(grid.rows[y], candidate)
+        const hint = findPointingWithDirection(cellsWithCandidate, grid, candidate, 'boxes', 'box', 'y')
+        if (hint) {
+            return hint
+        }
+    }
+}
+
+type Coordinate = 'x' | 'y' | 'box'
 
 function findPointingWithDirection(
     cellsWithCandidate: CellModel[],
     grid: GridModel,
     candidate: number,
-    type: 'row' | 'column'
+    collection: 'rows' | 'columns' | 'boxes',
+    coordinate1: Coordinate,
+    coordinate2: Coordinate
 ): Hint | undefined {
-    const coordinate1 = type === 'row' ? 'y' : 'x'
-    const coordinate2 = type !== 'row' ? 'y' : 'x'
+    if (new Set(cellsWithCandidate.map(cell => cell[coordinate1])).size != 1) return
 
-    const set = new Set(cellsWithCandidate.map(cell => cell[coordinate1]))
-    if (set.size != 1) {
-        return
-    }
-
-    const y = cellsWithCandidate[0][coordinate1]
-    const collection = type === 'row' ? grid.rows : grid.columns
-    const cellsWithEliminations = collection[y]
-        .filter(cell => cell.candidates.has(candidate) && !cellsWithCandidate.some(inBox => inBox[coordinate2] === cell[coordinate2]))
+    const collectionIndex = cellsWithCandidate[0][coordinate1]
+    const cellsWithEliminations = grid[collection][collectionIndex]
+        .filter(cell => cell.candidates.has(candidate) && cell[coordinate2] !== cellsWithCandidate[0][coordinate2])
 
     if (cellsWithEliminations.length) {
-        return toHint(cellsWithEliminations, cellsWithCandidate, candidate)
+        return toHint(cellsWithCandidate, cellsWithEliminations, candidate)
     }
 }
 
-function toHint(cellsWithEliminations: CellModel[], cellsWithCandidate: CellModel[], candidate: number) {
-    const tuple = cellsWithCandidate.map(x => x.id).sort().join(', ')
-    const eliminated = cellsWithEliminations.map(x => x.id).sort().join(', ')
+function toHint(cellsInTuple: CellModel[], cellsWithPossibleEliminations: CellModel[], candidate: number): Hint {
+    const tuple = cellsInTuple.map(x => x.id).sort().join(', ')
+    const eliminated = cellsWithPossibleEliminations.map(x => x.id).sort().join(', ')
 
     return {
-        cells: new Set<string>(cellsWithCandidate.map(x => x.id)),
+        cells: new Set(cellsInTuple.map(x => x.id)),
+        affectedCells: new Set(cellsWithPossibleEliminations.map(x => x.id)),
         description: `Pointing tuple ${tuple} eliminates candidate ${candidate} from ${eliminated}.`,
         apply() {
-            for (let cell of cellsWithEliminations) {
+            for (let cell of cellsWithPossibleEliminations) {
                 cell.candidates.delete(candidate)
             }
         }

@@ -1,22 +1,32 @@
 import { GridModel, Hint } from '../model/SudokuModel'
-import { ref, Ref } from 'vue'
+import { ref } from 'vue'
 import { findHint } from '../logic/strategies'
-import { eliminateCandidates } from '../logic/sudokuLogic'
+import { eliminateCandidates, fillCandidates } from '../logic/sudokuLogic'
 
-export function useHint(grid: GridModel): { currentHint: Ref<Hint | null>, findNextHint(): void, applyHint(): void } {
+export function useHint(grid: GridModel) {
     let currentHint = ref<Hint | null>(null)
 
     function findNextHint() {
         currentHint.value = findHint(grid)
     }
 
+    function applyHint() {
+        currentHint.value?.apply()
+        eliminateCandidates(grid)
+        findNextHint()
+    }
+
     return {
         currentHint,
         findNextHint,
-        applyHint() {
-            currentHint.value?.apply()
+        applyHint,
+        solve() {
+            fillCandidates(grid)
             eliminateCandidates(grid)
-            findNextHint()
+
+            do {
+                applyHint()
+            } while (currentHint.value != null)
         }
     }
 }

@@ -13,6 +13,11 @@ td.cell.highlighted {
     background-color: #9cffce !important;
 }
 /*noinspection CssUnusedSymbol*/
+td.cell.affected {
+    background-color: #f76fff !important;
+}
+
+/*noinspection CssUnusedSymbol*/
 td.cell.active {
     background-color: #eee5ae !important;
 }
@@ -35,7 +40,7 @@ td.cell.active {
 
 
 <template>
-    <td class="cell" :class="{ active, highlighted }" @click="onClick">
+    <td class="cell" :class="{ active, highlighted, affected }" @click="onClick">
         <div v-if="cell.value != null" class="value">
             {{ cell.value }}
         </div>
@@ -47,21 +52,18 @@ td.cell.active {
 
 <script lang="ts">
 import { defineComponent, PropType } from 'vue'
-import { CellModel } from "@/model/SudokuModel";
+import { CellModel } from '@/model/SudokuModel'
 
 export default defineComponent({
-    name: "Cell",
+    name: 'Cell',
     props: {
         cell: {
             type: Object as PropType<CellModel>,
             required: true
         },
-        active: {
-            type: Boolean,
-        },
-        highlighted: {
-            type: Boolean,
-        },
+        active: Boolean,
+        highlighted: Boolean,
+        affected: Boolean,
     },
     setup(props, ctx) {
         return {

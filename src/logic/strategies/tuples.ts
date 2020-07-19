@@ -31,9 +31,9 @@ function findTuplesInCollection(collection: CellCollection): Hint | undefined {
                 if (candidates.size == subset.length && subset.length < component.size) {
                     let description = `${[...candidates].sort().join('')}-Tuple in ${subset.map(x => x.id).sort().join(', ')}.\n`
 
-                    const cellsWithPossibleReductions = [...component].filter(x => !subset.includes(x))
+                    const cellsWithPossibleEliminations = [...component].filter(x => !subset.includes(x))
 
-                    description += cellsWithPossibleReductions
+                    description += cellsWithPossibleEliminations
                         .map(cell => {
                             const remainingCandidates = [...cell.candidates]
                                 .filter(candidate => !candidates.has(candidate))
@@ -47,8 +47,9 @@ function findTuplesInCollection(collection: CellCollection): Hint | undefined {
                     return {
                         description,
                         cells: new Set(subset.map(x => x.id)),
+                        affectedCells: new Set(cellsWithPossibleEliminations.map(x => x.id)),
                         apply() {
-                            for (let cell of cellsWithPossibleReductions) {
+                            for (let cell of cellsWithPossibleEliminations) {
                                 for (let candidate of candidates) {
                                     cell.candidates.delete(candidate)
                                 }

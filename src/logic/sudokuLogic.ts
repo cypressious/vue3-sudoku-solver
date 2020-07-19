@@ -5,7 +5,13 @@ export const GRID_SIZE = 9
 export function newGrid(): GridModel {
     let rows = Array.from({ length: GRID_SIZE }, (_, y) =>
         Array.from({ length: GRID_SIZE }, (_, x) =>
-            ({ candidates: new Set<number>(), id: `R${y + 1}C${x + 1}`, x, y })))
+            ({
+                candidates: new Set<number>(),
+                id: `R${y + 1}C${x + 1}`,
+                x,
+                y,
+                box: getBox(x, y)
+            })))
 
     const boxes: CellCollection[] = []
 
@@ -21,6 +27,10 @@ export function newGrid(): GridModel {
         columns: transpose(rows),
         boxes
     }
+}
+
+function getBox(x: number, y: number): number {
+    return Math.floor(x / 3) + Math.floor(y / 3) * 3
 }
 
 function transpose<T>(matrix: T[][]): T[][] {
@@ -80,4 +90,12 @@ function eliminateCandidatesInCollection(collections: CellCollection[]) {
             }
         }
     }
+}
+
+export function getCellsWithCandidate(collection: CellCollection, candidate: number) {
+    return collection.filter(x => x.value == null && x.candidates.has(candidate))
+}
+
+export function allValues() {
+    return Array.from({ length: GRID_SIZE }, (_, i) => i + 1)
 }

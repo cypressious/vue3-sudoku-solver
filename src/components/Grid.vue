@@ -31,6 +31,7 @@ tr > td:nth-child(3n) {
             <button class="button" @click="eliminateCandidates(grid)">Eliminate Candidates</button>
             <button class="button" @click="findNextHint">Next Hint</button>
             <button v-if="currentHint" class="button" @click="applyHint">Apply Hint</button>
+            <button class="button" @click="solve">Solve</button>
         </div>
 
         <table class="table is-bordered">
@@ -40,6 +41,7 @@ tr > td:nth-child(3n) {
                       :cell="cell"
                       :active="selectedPosition[0] === x && selectedPosition[1] === y"
                       :highlighted="currentHint && currentHint.cells.has(cell.id)"
+                      :affected="currentHint && currentHint.affectedCells.has(cell.id)"
                       @select="selectedPosition = [x, y]"/>
             </tr>
             </tbody>
