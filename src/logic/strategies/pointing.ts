@@ -11,6 +11,11 @@ function findPointingInBox(grid: GridModel, box: CellCollection): Hint | undefin
         .find(x => x)
 }
 
+/**
+ * Look for pointing pairs in box that eliminate candidates from the same row/column,
+ * i.e. a candidate is restricted to one row/column within a box, so all other appearances of this candidate can be
+ * eliminated from the same row/column.
+ */
 function findPointingInBoxForCandidate(grid: GridModel, box: CellCollection, candidate: number): Hint | undefined {
     const cellsWithCandidate = getCellsWithCandidate(box, candidate)
 
@@ -18,6 +23,11 @@ function findPointingInBoxForCandidate(grid: GridModel, box: CellCollection, can
         ?? findPointingWithDirection(cellsWithCandidate, grid, candidate, 'columns', 'x', 'box')
 }
 
+/**
+ * Look for pointing pairs in rows/column intersecting the box that eliminate candidates from the box,
+ * i.e. a candidate within an intersecting row/column is restricted to this box so all other appearances of this
+ * candidate inside the box can be eliminated.
+ */
 function findReversePointingInBoxForCandidate(grid: GridModel, box: CellCollection, candidate: number): Hint | undefined {
     const firstCell = box[0]
 
