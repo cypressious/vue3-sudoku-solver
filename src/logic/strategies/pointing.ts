@@ -2,13 +2,12 @@ import { CellCollection, CellModel, GridModel, Hint } from '../../model/SudokuMo
 import { allValues, getCellsWithCandidate } from '../sudokuLogic'
 
 export default function findPointing(grid: GridModel): Hint | undefined {
-    return grid.boxes.map(box => findPointingInBox(grid, box)).find(x => x)
+    return grid.boxes.first(box => findPointingInBox(grid, box))
 }
 
 function findPointingInBox(grid: GridModel, box: CellCollection): Hint | undefined {
     return allValues()
-        .map(candidate => findPointingInBoxForCandidate(grid, box, candidate) ?? findReversePointingInBoxForCandidate(grid, box, candidate))
-        .find(x => x)
+        .first(candidate => findPointingInBoxForCandidate(grid, box, candidate) ?? findReversePointingInBoxForCandidate(grid, box, candidate))
 }
 
 /**

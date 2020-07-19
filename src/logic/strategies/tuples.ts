@@ -3,9 +3,9 @@ import { subsets } from '../setHelpers'
 import { addLink, Graph, GraphNode, newGraph } from '../graph'
 
 export function findTupleElimination(grid: GridModel): Hint | undefined {
-    return grid.rows.map(findTuplesInCollection).find(x => x)
-        ?? grid.columns.map(findTuplesInCollection).find(x => x)
-        ?? grid.boxes.map(findTuplesInCollection).find(x => x)
+    return grid.rows.first(findTuplesInCollection)
+        ?? grid.columns.first(findTuplesInCollection)
+        ?? grid.boxes.first(findTuplesInCollection)
 }
 
 function findTuplesInCollection(collection: CellCollection): Hint | undefined {

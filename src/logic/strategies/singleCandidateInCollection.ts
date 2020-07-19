@@ -8,7 +8,7 @@ export function findSingleCandidate(grid: GridModel): Hint | undefined {
 }
 
 function findSingleCandidateInCollections(collections: CellCollection[], collectionName: string): Hint | undefined {
-    return collections.map(x => findSingleCandidateInCollection(x, collectionName)).find(x => x)
+    return collections.first(x => findSingleCandidateInCollection(x, collectionName))
 }
 
 function findSingleCandidateInCollection(collection: CellCollection, collectionName: string): Hint | undefined {
