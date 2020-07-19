@@ -4,7 +4,8 @@
   "scripts": {
     "dev": "vite",
     "build": "vite build",
-    "upgrades": "yarn upgrade-interactive --latest"
+    "upgrades": "yarn upgrade-interactive --latest",
+    "postinstall": "patch-package"
   },
   "dependencies": {
     "bulma": "0.9.0",
@@ -12,6 +13,8 @@
   },
   "devDependencies": {
     "@vue/compiler-sfc": "3.0.0-rc.1",
+    "patch-package": "6.2.2",
+    "postinstall-postinstall": "2.1.0",
     "vite": "1.0.0-rc.1"
   }
 }

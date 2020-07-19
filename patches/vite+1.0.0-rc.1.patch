@@ -1,0 +1,13 @@
+diff --git a/node_modules/vite/dist/node/esbuildService.js b/node_modules/vite/dist/node/esbuildService.js
+index 767a526..cbfdda9 100644
+--- a/node_modules/vite/dist/node/esbuildService.js
++++ b/node_modules/vite/dist/node/esbuildService.js
+@@ -54,7 +54,7 @@ exports.transform = async (src, request, options = {}, jsxOption) => {
+         loader: options.loader || path_1.default.extname(file).slice(1),
+         sourcemap: true,
+         sourcefile: request,
+-        target: 'es2020'
++        target: 'es2019'
+     };
+     try {
+         const result = await service.transform(src, options);
