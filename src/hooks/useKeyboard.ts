@@ -2,16 +2,20 @@ import { GridModel } from '../model/SudokuModel'
 import { onMounted, onUnmounted, Ref } from 'vue'
 import { GRID_SIZE } from '../logic/sudokuLogic'
 
+function modGrid(x: number) {
+    return (x + GRID_SIZE) % GRID_SIZE
+}
+
 export function useKeyboard(grid: GridModel, selectedPosition: Ref<number[]>) {
     function onArrowPress({ code }: KeyboardEvent) {
-        if (code == 'ArrowUp' && selectedPosition.value[1] > 0) {
-            selectedPosition.value[1]--
-        } else if (code == 'ArrowDown' && selectedPosition.value[1] < GRID_SIZE - 1) {
-            selectedPosition.value[1]++
-        } else if (code == 'ArrowLeft' && selectedPosition.value[0] > 0) {
-            selectedPosition.value[0]--
-        } else if (code == 'ArrowRight' && selectedPosition.value[0] < GRID_SIZE - 1) {
-            selectedPosition.value[0]++
+        if (code == 'ArrowUp') {
+            selectedPosition.value[1] = modGrid(selectedPosition.value[1] - 1)
+        } else if (code == 'ArrowDown') {
+            selectedPosition.value[1] = modGrid(selectedPosition.value[1] + 1)
+        } else if (code == 'ArrowLeft') {
+            selectedPosition.value[0] = modGrid(selectedPosition.value[0] - 1)
+        } else if (code == 'ArrowRight') {
+            selectedPosition.value[0] = modGrid(selectedPosition.value[0] + 1)
         }
     }
 
