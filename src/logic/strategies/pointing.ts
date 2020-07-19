@@ -23,17 +23,18 @@ function findPointingWithDirection(
     candidate: number,
     type: 'row' | 'column'
 ): Hint | undefined {
-    const coordinate = type === 'row' ? 'y' : 'x'
+    const coordinate1 = type === 'row' ? 'y' : 'x'
+    const coordinate2 = type !== 'row' ? 'y' : 'x'
 
-    const set = new Set(cellsWithCandidate.map(cell => cell[coordinate]))
+    const set = new Set(cellsWithCandidate.map(cell => cell[coordinate1]))
     if (set.size != 1) {
         return
     }
 
-    const y = cellsWithCandidate[0][coordinate]
+    const y = cellsWithCandidate[0][coordinate1]
     const collection = type === 'row' ? grid.rows : grid.columns
     const cellsWithEliminations = collection[y]
-        .filter(cell => cell.candidates.has(candidate) && !cellsWithCandidate.some(inBox => inBox.x === cell.x))
+        .filter(cell => cell.candidates.has(candidate) && !cellsWithCandidate.some(inBox => inBox[coordinate2] === cell[coordinate2]))
 
     if (cellsWithEliminations.length) {
         return toHint(cellsWithEliminations, cellsWithCandidate, candidate)
