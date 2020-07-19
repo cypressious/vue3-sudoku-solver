@@ -66,6 +66,8 @@ export function fillCandidates(grid: GridModel) {
             }
         }
     }
+
+    eliminateCandidates(grid)
 }
 
 export function eliminateCandidates(grid: GridModel) {

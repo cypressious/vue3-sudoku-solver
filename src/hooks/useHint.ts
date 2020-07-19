@@ -22,7 +22,6 @@ export function useHint(grid: GridModel) {
         applyHint,
         solve() {
             fillCandidates(grid)
-            eliminateCandidates(grid)
 
             do {
                 applyHint()
