@@ -22,11 +22,7 @@ function findTuplesInCollection(collection: CellCollection): Hint | undefined {
             for (let subset of subsets([...component])) {
                 if (subset.length < 2 || subset.length == component.size) continue
 
-                const candidates = new Set<number>()
-
-                for (let cell of subset) {
-                    cell.candidates.forEach(candidates.add, candidates)
-                }
+                const candidates = new Set(subset.flatMap(x => [...x.candidates]))
 
                 if (candidates.size == subset.length && subset.length < component.size) {
                     let description = `${[...candidates].sort().join('')}-Tuple in ${subset.map(x => x.id).sort().join(', ')}.\n`
