@@ -5,7 +5,9 @@
         </div>
 
         <p>
-            Use the mouse or arrow keys to move the selection. Use the number keys to enter a solution or Alt + number key to enter a candidate.
+            Use the mouse or arrow keys to move the selection. Use the number keys to enter a solution or Alt + number
+            key to
+            enter a candidate.
         </p>
 
         <p>
@@ -22,8 +24,14 @@
                 </div>
                 <div class="level-item">
                     <a
-                        href="/?digits=_6__5___3+____12_56+4_5_7621_+327584_6_+_4_267__5+856_3___2+_9__2_6__+__8_4____+_1__9_5__">5
-                        Stars
+                        href="/?digits=_6__5___3+____12_56+4_5_7621_+327584_6_+_4_267__5+856_3___2+_9__2_6__+__8_4____+_1__9_5__">
+                        5 Stars
+                    </a>
+                </div>
+                <div class="level-item">
+                    <a
+                        href="/?digits=1_____569+492_561_8+_561_924_+__964_8_1+_64_1____+218_356_4+_4_5___16+9_5_614_2+621_____5">
+                        X-Wing
                     </a>
                 </div>
             </div>
@@ -32,7 +40,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from 'vue'
+import {defineComponent} from 'vue'
 import Grid from './components/Grid.vue'
 
 export default defineComponent({
